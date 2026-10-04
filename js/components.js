@@ -57,7 +57,7 @@
     );
   }
 
-  /* portraitUrl is null in the data; keep the dashed placeholder in sync. */
+  /* Replaces the dashed placeholder tile with the real portrait. */
   function renderPortrait() {
     var P = D.professorProfile;
     if (!P.portraitUrl) return;
@@ -67,7 +67,10 @@
     img.className = "portrait-img";
     img.src = P.portraitUrl;
     img.alt = "Portrait of " + P.name;
-    img.loading = "lazy";
+    img.width = 301;
+    img.height = 402;
+    img.decoding = "async";
+    img.fetchPriority = "high";
     holder.parentNode.replaceChild(img, holder);
   }
 

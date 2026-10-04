@@ -22,6 +22,7 @@ Static, build-free website. Open `index.html` in any browser — no server, bund
 │   └── main.js         # boot sequence
 └── assets/
     ├── favicon.ico
+    ├── gouri-ashok-gargate.jpg  # hero portrait (301×402, 4:5 crop via CSS)
     └── fonts/          # self-hosted WOFF2 + OFL.txt — no external font requests
 ```
 
@@ -34,7 +35,7 @@ Static, build-free website. Open `index.html` in any browser — no server, bund
 
 ## Editing content
 
-Open `js/data.js` and edit the values — everything on the page follows from that file. To add a portrait or a CV, set `portraitUrl` / `cvUrl`; the placeholder tiles are replaced automatically once a URL is present.
+Open `js/data.js` and edit the values — everything on the page follows from that file. The hero portrait and CV are the two exceptions: they are also driven from `professorProfile`, via `portraitUrl` / `cvUrl`. The portrait is set to `assets/gouri-ashok-gargate.jpg`; the CV is still `null`, so its tiles stay disabled until a PDF link is supplied.
 
 ## Running locally (optional)
 

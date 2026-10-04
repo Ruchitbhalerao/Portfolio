@@ -19,7 +19,7 @@
     email: "gouri@rgsoipl.iitkgp.ac.in",
     location: "Kharagpur, West Bengal, India – 721302",
     cvUrl: null, // add a CV PDF link here
-    portraitUrl: null, // add a portrait image URL here
+    portraitUrl: "./assets/gouri-ashok-gargate.jpg",
     bio: [
       "Dr. Gouri Ashok Gargate is an Assistant Professor (Grade-I) at the Rajiv Gandhi School of Intellectual Property Law, Indian Institute of Technology Kharagpur. Her academic and research interests lie at the intersection of Intellectual Property Law, Management, Technology and Innovation.",
       "Her work examines how intellectual assets can be strategically governed, managed and transformed into economic and societal value. Her interdisciplinary profile spans law, IP management and life sciences, together with experience in academia, patent practice, industry and technology commercialization.",
