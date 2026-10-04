@@ -1,0 +1,196 @@
+/* ==========================================================================
+   responsive.css — breakpoint overrides, identical to the `sm:` / `md:` /
+   variants used by the original component markup.
+   Breakpoints follow the original scale:
+     sm = 40rem (640px) · md = 48rem (768px) · lg = 64rem (1024px)
+   ========================================================================== */
+
+/* --- Header navigation ----------------------------------------------------- */
+@media (min-width: 64rem) {
+  .nav-primary {
+    display: flex;
+  }
+
+  .nav-toggle {
+    display: none;
+  }
+
+  .nav-mobile {
+    display: none;
+  }
+}
+
+/* --- Hero ------------------------------------------------------------------ */
+@media (min-width: 48rem) {
+  .hero-grid {
+    grid-template-columns: 1.4fr 1fr;
+    padding-block: 7rem; /* md:py-28 */
+  }
+
+  .hero-title {
+    font-size: 4.5rem; /* md:text-7xl */
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* --- Section shell --------------------------------------------------------- */
+@media (min-width: 48rem) {
+  .section {
+    padding-block: 7rem; /* md:py-28 */
+  }
+
+  .section-head {
+    grid-template-columns: 200px 1fr;
+  }
+
+  .section-title {
+    font-size: 2.6rem;
+    line-height: 1.25;
+  }
+}
+
+/* --- About ----------------------------------------------------------------- */
+@media (min-width: 48rem) {
+  .about-lead {
+    grid-template-columns: 200px 1fr;
+  }
+}
+
+@media (min-width: 64rem) {
+  .about-split {
+    grid-template-columns: 1.3fr 1fr;
+  }
+}
+
+/* --- Research -------------------------------------------------------------- */
+@media (min-width: 40rem) {
+  .research-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .research-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 48rem) {
+  .impact-title {
+    font-size: 2.25rem; /* md:text-4xl */
+    line-height: 2.5rem;
+  }
+
+  .impact-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+/* --- Agenda ---------------------------------------------------------------- */
+@media (min-width: 48rem) {
+  .agenda-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* --- Publications ---------------------------------------------------------- */
+@media (min-width: 48rem) {
+  .pub-controls {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .pub-search {
+    width: 18rem; /* md:w-72 */
+  }
+
+  .pub-item {
+    grid-template-columns: 80px 1fr auto;
+  }
+}
+
+/* --- Books ----------------------------------------------------------------- */
+@media (min-width: 48rem) {
+  .books-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .books-wide {
+    grid-column: span 2 / span 2;
+  }
+}
+
+/* --- Projects -------------------------------------------------------------- */
+@media (min-width: 40rem) {
+  .project-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 48rem) {
+  .projects-grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+/* --- Teaching -------------------------------------------------------------- */
+@media (min-width: 48rem) {
+  .course-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* --- Students -------------------------------------------------------------- */
+@media (min-width: 40rem) {
+  .student-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .student-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* --- Awards ---------------------------------------------------------------- */
+@media (min-width: 48rem) {
+  .award-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* --- Academic profiles ----------------------------------------------------- */
+@media (min-width: 40rem) {
+  .profile-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .profile-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* --- Contact --------------------------------------------------------------- */
+@media (min-width: 48rem) {
+  .contact-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* --- Footer ---------------------------------------------------------------- */
+@media (min-width: 48rem) {
+  .footer-grid {
+    grid-template-columns: 1fr auto;
+  }
+
+  .footer-bottom {
+    grid-column: span 2 / span 2;
+  }
+}

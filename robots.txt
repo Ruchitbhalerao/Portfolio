@@ -1,0 +1,17 @@
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: *
+Allow: /
+
+# Replace https://example.com/ with the real origin before deploying.
+Sitemap: https://example.com/sitemap.xml

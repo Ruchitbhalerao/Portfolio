@@ -1,0 +1,1314 @@
+/* ==========================================================================
+   style.css — the complete stylesheet: design tokens, the reset that keeps the
+   box model identical to the original build, and every component style.
+   Layout rules live here; breakpoint overrides live in responsive.css and
+   keyframes live in animations.css.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Reset — margins, font inheritance and the box model are zeroed through
+      the universal selector so zero-specificity component rules can win.
+   -------------------------------------------------------------------------- */
+*,
+::before,
+::after,
+::backdrop,
+::file-selector-button {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0 solid;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  line-height: inherit;
+}
+
+hr {
+  height: 0;
+  color: inherit;
+  border-top-width: 1px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+  font-size: 1em;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+}
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+  vertical-align: middle;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  border-radius: 0;
+  background-color: transparent;
+  opacity: 1;
+}
+
+:where([hidden]:not([hidden="until-found"])) {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. Design tokens — identical values to the original @theme / :root block.
+   -------------------------------------------------------------------------- */
+:root {
+  --radius: 0.25rem;
+  --radius-sm: calc(var(--radius) - 2px);
+
+  --font-serif: "Newsreader", Georgia, serif;
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --background: oklch(0.982 0.008 85);
+  --foreground: oklch(0.24 0.04 260);
+  --card: oklch(0.993 0.005 85);
+  --card-foreground: oklch(0.24 0.04 260);
+  --popover: oklch(0.993 0.005 85);
+  --popover-foreground: oklch(0.24 0.04 260);
+  --primary: oklch(0.27 0.06 258);
+  --primary-foreground: oklch(0.98 0.008 85);
+  --secondary: oklch(0.955 0.012 85);
+  --secondary-foreground: oklch(0.27 0.06 258);
+  --muted: oklch(0.955 0.012 85);
+  --muted-foreground: oklch(0.5 0.025 255);
+  --accent: oklch(0.5 0.075 210);
+  --accent-foreground: oklch(0.98 0.008 85);
+  --gold: oklch(0.7 0.11 80);
+  --ink: oklch(0.22 0.045 258);
+  --ink-foreground: oklch(0.94 0.012 85);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.89 0.015 85);
+  --input: oklch(0.89 0.015 85);
+  --ring: oklch(0.5 0.075 210);
+
+  --pattern: radial-gradient(circle at 1px 1px, oklch(0.27 0.06 258 / 0.07) 1px, transparent 0);
+  --shadow-soft: 0 1px 2px oklch(0.27 0.06 258 / 0.04), 0 8px 24px -12px oklch(0.27 0.06 258 / 0.12);
+
+  --transition-colors: color, background-color, border-color, outline-color, text-decoration-color, fill,
+    stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+  --transition-duration: 150ms;
+  --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   3. Base layer — mirrors the original @layer base rules.
+   -------------------------------------------------------------------------- */
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif);
+  letter-spacing: -0.01em;
+}
+
+/* Shared building blocks ---------------------------------------------------- */
+.container {
+  margin-inline: auto;
+  max-width: 72rem; /* max-w-6xl */
+  padding-inline: 1.5rem; /* px-6 */
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.bg-pattern {
+  background-image: var(--pattern);
+  background-size: 22px 22px;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.eyebrow.gold {
+  color: var(--gold);
+}
+
+/* Header -------------------------------------------------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--border);
+  background-color: color-mix(in oklab, var(--background) 90%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.header-inner {
+  display: flex;
+  height: 4rem; /* h-16 */
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  font-family: var(--font-serif);
+  font-size: 1.25rem; /* text-xl */
+  line-height: 1.75rem;
+  color: var(--primary);
+}
+
+.nav-primary {
+  display: none;
+  align-items: center;
+  gap: 1.5rem; /* gap-6 */
+}
+
+.nav-link {
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem;
+  color: var(--muted-foreground);
+  transition-property: var(--transition-colors);
+  transition-timing-function: var(--transition-timing);
+  transition-duration: var(--transition-duration);
+}
+
+.nav-link:hover {
+  color: var(--primary);
+}
+
+.nav-toggle {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--primary);
+}
+
+.nav-mobile {
+  border-top: 1px solid var(--border);
+  background-color: var(--background);
+  padding: 1rem 1.5rem; /* py-4 px-6 */
+}
+
+.nav-mobile a {
+  display: block;
+  padding-block: 0.5rem; /* py-2 */
+  color: var(--primary);
+}
+
+.nav-mobile .nav-mobile-cta {
+  padding-top: 0.75rem; /* pt-3 */
+}
+
+/* Download CV button -------------------------------------------------------- */
+.btn-cv {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--primary);
+  padding: 0.5rem 1rem; /* py-2 px-4 */
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  transition-property: var(--transition-colors);
+  transition-timing-function: var(--transition-timing);
+  transition-duration: var(--transition-duration);
+}
+
+.btn-cv.is-primary {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.btn-cv.is-disabled {
+  color: var(--primary);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Hover rules are declared last, matching the original cascade order. */
+.btn-cv.is-primary:hover {
+  background-color: color-mix(in oklab, var(--primary) 90%, transparent);
+}
+
+/* Hero ---------------------------------------------------------------------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-pattern {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-grid {
+  position: relative;
+  margin-inline: auto;
+  max-width: 72rem;
+  display: grid;
+  align-items: center;
+  gap: 3.5rem; /* gap-14 */
+  padding: 5rem 1.5rem; /* py-20 px-6 */
+}
+
+.hero-title {
+  font-size: 3rem; /* text-5xl */
+  line-height: 1.05;
+  font-weight: 400;
+  color: var(--primary);
+}
+
+.hero-rule {
+  margin-top: 1.5rem;
+  height: 1px;
+  width: 4rem; /* w-16 */
+  background-color: var(--gold);
+}
+
+.hero-role {
+  margin-top: 1.5rem;
+  font-size: 1.125rem; /* text-lg */
+  line-height: 1.75rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.hero-affiliation {
+  color: var(--muted-foreground);
+}
+
+.hero-tagline {
+  margin-top: 2rem;
+  max-width: 36rem; /* max-w-xl */
+  font-family: var(--font-serif);
+  font-size: 1.5rem; /* text-2xl */
+  line-height: 1.375; /* leading-snug */
+  font-style: italic;
+  color: color-mix(in oklab, var(--foreground) 85%, transparent);
+}
+
+.hero-actions {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hero-figure {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 24rem; /* max-w-sm */
+}
+
+.portrait-img {
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  box-shadow: var(--shadow-soft);
+}
+
+.portrait-placeholder {
+  display: flex;
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border);
+  background-color: var(--card);
+  box-shadow: var(--shadow-soft);
+}
+
+.portrait-initials {
+  font-family: var(--font-serif);
+  font-size: 3.75rem; /* text-6xl */
+  line-height: 1;
+  color: color-mix(in oklab, var(--primary) 30%, transparent);
+}
+
+.portrait-note {
+  margin-top: 1rem;
+}
+
+.figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.75rem; /* text-xs */
+  line-height: 1rem;
+  color: var(--muted-foreground);
+}
+
+/* Hero metrics bar ---------------------------------------------------------- */
+.metrics-bar {
+  position: relative;
+  border-top: 1px solid var(--border);
+  background-color: color-mix(in oklab, var(--card) 70%, transparent);
+}
+
+.metrics-grid {
+  margin-inline: auto;
+  max-width: 72rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px; /* gap-px */
+  padding-inline: 1.5rem;
+}
+
+.metric-cell {
+  padding-block: 1.5rem; /* py-6 */
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--muted-foreground);
+}
+
+.metric-value {
+  font-family: var(--font-serif);
+  font-size: 1.5rem; /* text-2xl */
+  line-height: 2rem;
+  color: var(--primary);
+}
+
+.metric-source {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em; /* tracking-wider */
+  color: color-mix(in oklab, var(--muted-foreground) 80%, transparent);
+}
+
+/* Generic section shell ----------------------------------------------------- */
+.section {
+  border-top: 1px solid var(--border);
+  padding-block: 5rem; /* py-20 */
+}
+
+.section.is-muted {
+  background-color: var(--secondary);
+}
+
+.section-head {
+  margin-bottom: 3rem; /* mb-12 */
+  display: grid;
+  gap: 1rem; /* gap-4 */
+}
+
+.section-eyebrow {
+  padding-top: 0.5rem; /* pt-2 */
+}
+
+.section-title {
+  font-size: 1.875rem; /* text-3xl */
+  line-height: 2.25rem;
+  font-weight: 400;
+  color: var(--primary);
+}
+
+.section-subtitle {
+  margin-top: 0.75rem; /* mt-3 */
+  max-width: 42rem; /* max-w-2xl */
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: var(--muted-foreground);
+}
+
+.sub-head {
+  margin-bottom: 0.75rem; /* mb-3 */
+  font-size: 1.25rem; /* text-xl */
+  line-height: 1.75rem;
+}
+
+.sub-head.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.sub-head.primary {
+  color: var(--primary);
+}
+
+/* About --------------------------------------------------------------------- */
+.about-lead {
+  display: grid;
+  gap: 3rem; /* gap-12 */
+}
+
+.about-split {
+  display: grid;
+  gap: 3rem; /* gap-12 */
+}
+
+.about-bio {
+  font-size: 1.125rem;
+  line-height: 1.625; /* leading-relaxed */
+  color: color-mix(in oklab, var(--foreground) 90%, transparent);
+}
+
+:where(.about-bio > :not(:last-child)) {
+  margin-block-start: 0;
+  margin-block-end: 1.25rem; /* space-y-5 */
+}
+
+.about-bio .dropcap::first-letter {
+  float: left;
+  margin-right: 0.5rem;
+  font-family: var(--font-serif);
+  font-size: 3.75rem;
+  line-height: 1;
+  color: var(--primary);
+}
+
+.method-card {
+  margin-top: 2rem; /* mt-8 — wins over the space-y-5 sibling rhythm */
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  padding: 1.5rem; /* p-6 */
+}
+
+.method-value {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  color: var(--primary);
+}
+
+:where(.about-side > :not(:last-child)) {
+  margin-block-start: 0;
+  margin-block-end: 2rem; /* space-y-8 */
+}
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem; /* gap-2 */
+}
+
+.chip {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  padding: 0.25rem 0.625rem; /* py-1 px-2.5 */
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.theme-list {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--muted-foreground);
+}
+
+:where(.theme-list > :not(:last-child)) {
+  margin-block-start: 0;
+  margin-block-end: 0.375rem; /* space-y-1.5 */
+}
+
+.theme-mark {
+  margin-right: 0.5rem; /* mr-2 */
+  color: var(--gold);
+}
+
+/* Research ------------------------------------------------------------------ */
+.research-grid {
+  display: grid;
+  gap: 1px; /* gap-px */
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background-color: var(--border);
+}
+
+.research-card {
+  background-color: var(--card);
+  padding: 1.5rem; /* p-6 */
+  transition-property: var(--transition-colors);
+  transition-timing-function: var(--transition-timing);
+  transition-duration: var(--transition-duration);
+}
+
+.research-index {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--gold);
+}
+
+.research-card h3 {
+  margin-top: 0.75rem; /* mt-3 */
+  font-size: 1.125rem;
+  line-height: 1.375; /* text-lg + leading-snug */
+  color: var(--primary);
+}
+
+.research-card p {
+  margin-top: 0.5rem; /* mt-2 */
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--muted-foreground);
+}
+
+.research-ecosystem {
+  margin-top: 4rem; /* mt-16 */
+}
+
+.eyebrow.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.eyebrow.mb-5 {
+  margin-bottom: 1.25rem;
+}
+
+.eyebrow.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.eyebrow.mb-3 {
+  margin-bottom: 0.75rem;
+}
+
+/* Research ecosystem flow (ImpactFlow) -------------------------------------- */
+.flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: 1rem; /* gap-y-4 */
+}
+
+.flow-step {
+  display: flex;
+  align-items: center;
+  opacity: 0; /* revealed by animations.css once in view */
+}
+
+.flow-chip {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  padding: 0.5rem 1rem; /* py-2 px-4 */
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: var(--primary);
+  box-shadow: var(--shadow-soft);
+}
+
+.flow-arrow {
+  margin-inline: 0.75rem; /* mx-3 */
+  color: var(--gold);
+}
+
+/* Research impact (dark band) ----------------------------------------------- */
+.impact {
+  border-top: 1px solid var(--border);
+  background-color: var(--ink);
+  padding-block: 5rem; /* py-20 */
+  color: var(--ink-foreground);
+}
+
+.impact .eyebrow {
+  margin-bottom: 1rem;
+  color: var(--gold);
+}
+
+.impact-title {
+  margin-bottom: 2.5rem; /* mb-10 */
+  font-size: 1.875rem; /* text-3xl */
+  line-height: 2.25rem;
+  font-weight: 400;
+}
+
+.impact-grid {
+  display: grid;
+  gap: 1.5rem; /* gap-6 */
+}
+
+.impact-item {
+  border-color: color-mix(in oklab, var(--gold) 60%, transparent); /* border-t border-gold/60 */
+  border-top-width: 1px;
+  padding-top: 1rem; /* pt-4 */
+}
+
+.impact-index {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--gold);
+}
+
+.impact-item p {
+  margin-top: 0.5rem; /* mt-2 */
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+/* Agenda -------------------------------------------------------------------- */
+.agenda-list {
+  display: grid;
+  column-gap: 2.5rem; /* gap-x-10 */
+}
+
+.agenda-item {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem; /* gap-5 */
+  border-bottom: 1px solid var(--border);
+  padding-block: 1.25rem; /* py-5 */
+}
+
+.agenda-index {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--gold);
+}
+
+.agenda-text {
+  font-family: var(--font-serif);
+  font-size: 1.5rem; /* text-2xl */
+  line-height: 2rem;
+  color: var(--primary);
+}
+
+/* Publications -------------------------------------------------------------- */
+.pub-controls {
+  margin-bottom: 2rem; /* mb-8 */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pub-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem; /* gap-2 */
+}
+
+.filter-btn {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  padding: 0.375rem 0.75rem; /* py-1.5 px-3 */
+  font-size: 0.75rem;
+  line-height: 1rem;
+  transition-property: var(--transition-colors);
+  transition-timing-function: var(--transition-timing);
+  transition-duration: var(--transition-duration);
+  color: var(--muted-foreground);
+}
+
+.filter-btn[aria-selected="true"] {
+  border-color: var(--primary);
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* Declared after the selected state, mirroring the original cascade order. */
+.filter-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Visually hidden, still announced. Absolutely positioned and clipped so it
+   never takes part in the flex layout of .pub-controls. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pub-search {
+  width: 100%;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--input);
+  background-color: var(--card);
+  padding: 0.5rem 0.75rem; /* py-2 px-3 */
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  outline-style: none;
+}
+
+/* The field suppresses the user-agent ring by design; give keyboard users the
+   same visible ring every other focusable already has. :focus-visible keeps a
+   mouse click showing only the accent border, exactly as before. */
+.pub-search:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.pub-search:focus {
+  border-color: var(--accent);
+}
+
+.pub-list {
+  border-block: 1px solid var(--border); /* border-y */
+}
+
+:where(.pub-list > :not(:last-child)) {
+  border-bottom: 1px solid var(--border); /* divide-y divide-border */
+}
+
+.pub-item {
+  display: grid;
+  gap: 0.5rem; /* gap-2 */
+  padding-block: 1.5rem; /* py-6 */
+}
+
+.pub-year {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--muted-foreground);
+}
+
+.pub-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem; /* text-xl */
+  line-height: 1.375; /* leading-snug */
+  color: var(--primary);
+}
+
+.pub-authors {
+  margin-top: 0.25rem; /* mt-1 */
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--muted-foreground);
+}
+
+.pub-venue {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-style: italic;
+  color: color-mix(in oklab, var(--foreground) 80%, transparent);
+}
+
+.pub-doi {
+  margin-top: 0.25rem;
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--accent);
+}
+
+.pub-doi:hover {
+  text-decoration: underline;
+}
+
+.pub-type {
+  align-self: flex-start; /* self-start */
+}
+
+.pub-empty {
+  padding-block: 2.5rem; /* py-10 */
+  text-align: center;
+  color: var(--muted-foreground);
+}
+
+.link-accent {
+  display: inline-block;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--accent);
+}
+
+.link-accent:hover {
+  text-decoration: underline;
+}
+
+.link-accent.mt-8 {
+  margin-top: 2rem;
+}
+
+.btn-solid {
+  border-radius: var(--radius-sm);
+  background-color: var(--primary);
+  padding: 0.75rem 1.25rem; /* py-3 px-5 */
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: var(--primary-foreground);
+}
+
+.btn-solid.mt-8 {
+  display: inline-block;
+  margin-top: 2rem;
+}
+
+.btn-solid:hover {
+  background-color: color-mix(in oklab, var(--primary) 90%, transparent);
+}
+
+.btn-outline {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--primary);
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.hero-link-accent {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--accent);
+  text-underline-offset: 4px;
+}
+
+.hero-link-accent:hover {
+  text-decoration: underline;
+}
+
+/* Conferences --------------------------------------------------------------- */
+.conf-list {
+  position: relative;
+  border-left: 1px solid var(--border);
+  padding-left: 2rem; /* pl-8 */
+}
+
+.conf-item {
+  position: relative;
+  padding-bottom: 1.75rem; /* pb-7 */
+}
+
+.conf-dot {
+  position: absolute;
+  left: -37px; /* -left-[37px] */
+  top: 0.375rem; /* top-1.5 */
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: calc(infinity * 1px); /* rounded-full */
+  background-color: var(--accent);
+}
+
+.conf-meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--muted-foreground);
+}
+
+.conf-title {
+  margin-top: 0.25rem; /* mt-1 */
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: var(--primary);
+}
+
+.conf-toggle {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--accent);
+}
+
+.conf-toggle:hover {
+  text-decoration: underline;
+}
+
+/* Books / educational resources --------------------------------------------- */
+.books-grid {
+  display: grid;
+  gap: 3rem; /* gap-12 */
+}
+
+:where(.books-list > :not(:last-child)) {
+  margin-block-start: 0;
+  margin-block-end: 1rem; /* space-y-4 */
+}
+
+.book-title {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-style: italic;
+}
+
+.book-year {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--muted-foreground);
+}
+
+.sub-head.mt-10 {
+  margin-top: 2.5rem;
+}
+
+.patent-line {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.patent-year {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--muted-foreground);
+}
+
+.edu-list {
+  border-block: 1px solid var(--border);
+}
+
+:where(.edu-list > :not(:last-child)) {
+  border-bottom: 1px solid var(--border);
+}
+
+.edu-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem; /* gap-6 */
+  padding-block: 0.75rem; /* py-3 */
+}
+
+.edu-year {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--muted-foreground);
+}
+
+/* Projects ------------------------------------------------------------------ */
+.projects-grid {
+  display: grid;
+  gap: 2.5rem; /* gap-10 */
+}
+
+.project-list {
+  display: grid;
+  gap: 0.75rem; /* gap-3 */
+}
+
+.project-card {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  padding: 1.25rem; /* p-5 */
+  font-size: 0.875rem;
+  line-height: 1.625; /* leading-relaxed */
+  box-shadow: var(--shadow-soft);
+}
+
+.copi-card {
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in oklab, var(--gold) 50%, transparent);
+  background-color: var(--card);
+  padding: 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  box-shadow: var(--shadow-soft);
+}
+
+/* Teaching ------------------------------------------------------------------ */
+.course-grid {
+  display: grid;
+  gap: 1px;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background-color: var(--border);
+}
+
+.course-card {
+  background-color: var(--card);
+  padding: 2rem; /* p-8 */
+}
+
+.course-card h3 {
+  font-size: 1.5rem; /* text-2xl */
+  line-height: 2rem;
+  color: var(--primary);
+}
+
+.course-platform {
+  margin-top: 0.75rem; /* mt-3 */
+}
+
+/* Students ------------------------------------------------------------------ */
+.student-grid {
+  display: grid;
+  gap: 1.5rem; /* gap-6 */
+}
+
+.student-card {
+  border-color: var(--primary); /* border-t-2 border-primary */
+  border-top-width: 2px;
+  padding-top: 1.25rem; /* pt-5 */
+}
+
+.student-card h3 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  color: var(--primary);
+}
+
+.student-area {
+  margin-top: 0.5rem; /* mt-2 */
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--muted-foreground);
+}
+
+.student-thesis {
+  margin-top: 0.75rem; /* mt-3 */
+  font-family: var(--font-serif);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-style: italic;
+}
+
+.student-year {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--muted-foreground);
+}
+
+/* Awards -------------------------------------------------------------------- */
+.award-list {
+  display: grid;
+  column-gap: 2.5rem; /* gap-x-10 */
+}
+
+.award-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* gap-4 */
+  border-bottom: 1px solid var(--border);
+  padding-block: 1.25rem; /* py-5 */
+}
+
+.award-diamond {
+  height: 0.5rem;
+  width: 0.5rem;
+  rotate: 45deg;
+  background-color: var(--gold);
+}
+
+.award-text {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  color: var(--primary);
+}
+
+/* Academic profiles --------------------------------------------------------- */
+.profile-grid {
+  display: grid;
+  gap: 0.75rem; /* gap-3 */
+}
+
+.profile-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  padding: 1rem 1.25rem; /* py-4 px-5 */
+  color: var(--primary);
+  transition-property: var(--transition-colors);
+  transition-timing-function: var(--transition-timing);
+  transition-duration: var(--transition-duration);
+}
+
+.profile-arrow {
+  color: var(--accent);
+}
+
+.profile-disabled {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border);
+  padding: 1rem 1.25rem;
+  color: var(--muted-foreground);
+}
+
+.profile-disabled .note {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.profile-link:hover {
+  border-color: var(--accent);
+}
+
+/* Contact ------------------------------------------------------------------- */
+.contact-grid {
+  display: grid;
+  gap: 2.5rem; /* gap-10 */
+}
+
+.contact-email {
+  word-break: break-all;
+  font-family: var(--font-serif);
+  font-size: 1.875rem; /* text-3xl */
+  line-height: 2.25rem;
+  color: var(--primary);
+}
+
+.contact-email:hover {
+  color: var(--accent);
+}
+
+.contact-actions {
+  margin-top: 1.5rem; /* mt-6 */
+}
+
+.contact-address {
+  font-style: normal;
+  line-height: 1.625; /* leading-relaxed */
+  color: var(--muted-foreground);
+}
+
+/* Footer -------------------------------------------------------------------- */
+.site-footer {
+  background-color: var(--ink);
+  padding-block: 3.5rem; /* py-14 */
+  color: var(--ink-foreground);
+}
+
+.footer-grid {
+  margin-inline: auto;
+  max-width: 72rem;
+  display: grid;
+  gap: 2rem; /* gap-8 */
+  padding-inline: 1.5rem;
+}
+
+.footer-name {
+  font-family: var(--font-serif);
+  font-size: 1.5rem; /* text-2xl */
+  line-height: 2rem;
+}
+
+.footer-meta {
+  margin-top: 0.5rem; /* mt-2 */
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  opacity: 0.8;
+}
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1.5rem;
+  row-gap: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  opacity: 0.9;
+}
+
+.footer-nav a:hover {
+  color: var(--gold);
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-color: color-mix(in oklab, var(--ink-foreground) 20%, transparent);
+  border-top-width: 1px;
+  padding-top: 1.5rem; /* pt-6 */
+  font-size: 0.75rem;
+  line-height: 1rem;
+  opacity: 0.7;
+}
+
+.footer-bottom a:hover {
+  color: var(--gold);
+}

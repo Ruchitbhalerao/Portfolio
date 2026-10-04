@@ -1,0 +1,37 @@
+/* ==========================================================================
+   animations.css — scroll-triggered reveal used by the research ecosystem
+   flow, reproduced from the original keyframes and reduced-motion guard.
+   ========================================================================== */
+
+@keyframes flow-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Steps stay invisible until the IntersectionObserver in js/components.js
+   adds .flow-visible to the list. */
+.flow.flow-visible .flow-step {
+  animation: flow-in 0.7s ease-out forwards;
+  animation-delay: var(--flow-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No animated scrolling either. */
+  html {
+    scroll-behavior: auto;
+  }
+
+  .flow-step {
+    opacity: 1;
+  }
+
+  .flow.flow-visible .flow-step {
+    animation: none;
+  }
+}
